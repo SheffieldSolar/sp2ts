@@ -17,6 +17,13 @@ from sp2ts import to_unixtime, from_unixtime, sp2ts, ts2sp
 
 class sp2tsTestCase(unittest.TestCase):
     """Tests for `sp2ts.py`."""
+    
+    def setUp(self):
+        self.dt_no_dst_naive = datetime(2020, 3, 28, 12, 34, 56, tzinfo=None)
+        self.dt_no_dst_aware = pytz.timezone("Europe/London").localize(self.dt_no_dst_naive)
+        self.dt_dst_naive = datetime(2020, 3, 29, 12, 34, 56, tzinfo=None)
+        self.dt_dst_aware = pytz.timezone("Europe/London").localize(self.dt_dst_naive)
+
     def test_to_unixtime(self):
         """
         Test the `to_unixtime()` function with several test cases generated using
@@ -26,19 +33,50 @@ class sp2tsTestCase(unittest.TestCase):
             2020-03-28 12:34:56 (GMT) -> 2020-03-28T12:34:56Z -> 1585398896
             2020-03-29 12:34:56 (BST) -> 2020-03-29T11:34:56Z -> 1585481696
         """
-        dt_no_dst_naive = datetime(2020, 3, 28, 12, 34, 56, tzinfo=None)
-        dt_no_dst_aware = pytz.timezone("Europe/London").localize(dt_no_dst_naive)
-        dt_dst_naive = datetime(2020, 3, 29, 12, 34, 56, tzinfo=None)
-        dt_dst_aware = pytz.timezone("Europe/London").localize(dt_dst_naive)
+#         dt_no_dst_naive = datetime(2020, 3, 28, 12, 34, 56, tzinfo=None)
+#         dt_no_dst_aware = pytz.timezone("Europe/London").localize(self.dt_no_dst_naive)
+#         dt_dst_naive = datetime(2020, 3, 29, 12, 34, 56, tzinfo=None)
+#         dt_dst_aware = pytz.timezone("Europe/London").localize(self.dt_dst_naive)
+
         # Test with tz_info in the datetime object  (i.e. tz-aware datetime)
-        self.assertEqual(to_unixtime(dt_no_dst_aware), 1585398896)
-        self.assertEqual(to_unixtime(dt_dst_aware), 1585481696)
+        self.assertEqual(to_unixtime(self.dt_no_dst_aware), 1585398896)
+        self.assertEqual(to_unixtime(self.dt_dst_aware), 1585481696)
         # Test with separate tz_info
-        self.assertEqual(to_unixtime(dt_no_dst_naive, "Europe/London"), 1585398896)
-        self.assertEqual(to_unixtime(dt_dst_naive, "Europe/London"), 1585481696)
+        self.assertEqual(to_unixtime(self.dt_no_dst_naive, "Europe/London"), 1585398896)
+        self.assertEqual(to_unixtime(self.dt_dst_naive, "Europe/London"), 1585481696)
         # Test validations
-        self.assertRaises(Exception, to_unixtime, dt_no_dst_naive)
-        self.assertRaises(Exception, to_unixtime, dt_dst_naive)
+        self.assertRaises(Exception, to_unixtime, self.dt_no_dst_naive)
+        self.assertRaises(Exception, to_unixtime, self.dt_dst_naive)
+
+    def test_to_unixtime_sub(self):
+        """
+        Test the `to_unixtime()` function with several test cases generated using
+        http://www.epochconverter.com/
+
+        Test datetimes:
+            2020-03-28 12:34:56 (GMT) -> 2020-03-28T12:34:56Z -> 1585398896
+            2020-03-29 12:34:56 (BST) -> 2020-03-29T11:34:56Z -> 1585481696
+        """
+#         dt_no_dst_naive = datetime(2020, 3, 28, 12, 34, 56, tzinfo=None)
+#         dt_no_dst_aware = pytz.timezone("Europe/London").localize(dt_no_dst_naive)
+#         dt_dst_naive = datetime(2020, 3, 29, 12, 34, 56, tzinfo=None)
+#         dt_dst_aware = pytz.timezone("Europe/London").localize(dt_dst_naive)
+        
+        data =[
+            ('dt_no_dst_aware', (self.dt_no_dst_aware,), 1585398896,),
+            ('dt_dst_aware', (self.dt_dst_aware,), 1585481696,),
+            #
+            ('dt_no_dst_naive', (self.dt_no_dst_naive, "Europe/London",), 1585398896,),
+            ('dt_dst_naive', (self.dt_dst_naive, "Europe/London",),1585481696,),
+            ]
+        
+        for (name, dt, unixtime) in data:
+            with self.subTest(name=name):
+                self.assertEqual(to_unixtime(*dt), unixtime, name)
+        
+        self.assertRaises(Exception, to_unixtime, self.dt_no_dst_naive)
+        self.assertRaises(Exception, to_unixtime, self.dt_dst_naive)
+
 
     def test_from_unixtime(self):
         """
