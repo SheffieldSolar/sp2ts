@@ -24,7 +24,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version="0.1.0",
+    version="0.1.1",
 
     description="Convert between the settlement periods used by GB electricity industry and Unix timestamps.",
     long_description=long_description,
@@ -108,7 +108,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         "console_scripts": [
-            "sp2ts = sp2ts:main",
+            "sp2ts = sp2ts.sp2ts:main",
         ],
     },
     

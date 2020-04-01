@@ -6,7 +6,7 @@ A Python module for converting between the settlement periods used by GB electri
 * Convert date and settlement period to Unix timestamp and vice versa.
 * Convert date and settlement period to Python datetime object and vice versa.
 * Convert Python datetime objects to Unix timestamp and vice versa.
-* Version 0.1.0
+* Version 0.1.1
 * Developed and tested with Python 3.7, should work for 3.6+.
 
 ## How do I get set up? ##
@@ -94,3 +94,9 @@ if __name__ == "__main__":
 ## How do I update? ##
 
 Run `pip3 install --upgrade git+https://github.com/SheffieldSolar/sp2ts/`.
+
+## How do I run tests? ##
+
+Clone the repo locally, then run the following command from the repo's root:
+
+```>> python -m Tests.test_sp2ts```
