@@ -12,6 +12,7 @@ from typing import Optional, Tuple
 from datetime import datetime, date, time, timedelta
 import argparse
 import pytz
+import numpy as np
 
 TRANSITION_DATES_TS = [
     (954028800, 972777600), (985478400, 1004227200), (1017532800, 1035676800),
@@ -238,7 +239,7 @@ def _validate_timezone(name, timezone_):
         # raise ValueError(f"Unknown timezone '{timezone_}'")
 
 def _validate_timestamp(name, timestamp_):
-    if not isinstance(timestamp_, int):
+    if not isinstance(timestamp_, (int, np.int32, np.int64)):
         raise TypeError(f"`{name}` must be of type int")
     if timestamp_ < 0:
         raise ValueError("Inavalid value for `{name}`, Unix timestamps cannot be negative")

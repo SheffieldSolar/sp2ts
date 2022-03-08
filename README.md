@@ -6,7 +6,7 @@ A Python module for converting between the settlement periods used by GB electri
 * Convert date and settlement period to Unix timestamp and vice versa.
 * Convert date and settlement period to Python datetime object and vice versa.
 * Convert Python datetime objects to Unix timestamp and vice versa.
-* Version 0.2.0
+* Version 0.2.1
 * Developed and tested with Python 3.9, should work for 3.6+.
 
 ## How do I get set up? ##
