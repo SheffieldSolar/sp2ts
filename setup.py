@@ -28,9 +28,12 @@ setup(
 
     description="Convert between the settlement periods used by GB electricity industry and Unix timestamps.",
     long_description=long_description,
+    long_description_content_type="text/markdown",
 
     # The project's main homepage.
     url="https://github.com/SheffieldSolar/sp2ts",
+    
+    download_url="https://github.com/SheffieldSolar/sp2ts/archive/refs/tags/0.2.1.tar.gz",
 
     # Author details
     author="Jamie Taylor",
@@ -63,6 +66,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 
     # What does your project relate to?
