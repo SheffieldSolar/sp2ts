@@ -13,7 +13,9 @@ A Python module for converting between the settlement periods used by GB electri
 
 Make sure you have Git installed - [Download Git](https://git-scm.com/downloads)
 
-Run `pip3 install git+https://github.com/SheffieldSolar/sp2ts/`
+Run `pip install sp2ts`
+
+(or `pip install git+https://github.com/SheffieldSolar/sp2ts/`)
 
 Check that the installation was successful by running the following command from terminal / command-line:
 
