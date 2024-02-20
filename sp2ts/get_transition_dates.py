@@ -14,6 +14,7 @@ import pandas as pd
 
 from sp2ts import to_unixtime
 
+
 def main():
     tz = timezone("Europe/London")
     transition_dates = pd.DataFrame([
@@ -33,6 +34,7 @@ def main():
         "\r\n    ".join([f"({t[4]}, {t[5]}), # {t[1]}: {t[2]}, {t[3]}" for t in transition_dates_]),
         "\r\n]"
     )
+
 
 if __name__ == "__main__":
     main()
