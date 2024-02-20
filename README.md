@@ -1,21 +1,21 @@
+
 # sp2ts
 A Python module for converting between the settlement periods used by GB electricity industry and Unix timestamps.
 
-## What is this repository for? ##
+**Latest Version: 1.0.0**
 
-* Convert date and settlement period to Unix timestamp and vice versa.
-* Convert date and settlement period to Python datetime object and vice versa.
+## About this repository
+
+* Convert settlement date and settlement period to Unix timestamp and vice versa.
+* Convert settlement date and settlement period to Python datetime object and vice versa.
 * Convert Python datetime objects to Unix timestamp and vice versa.
-* Version 0.2.1
-* Developed and tested with Python 3.9, should work for 3.6+.
+* Developed and tested with Python 3.11, should work for 3.9+.
 
-## How do I get set up? ##
-
-Make sure you have Git installed - [Download Git](https://git-scm.com/downloads)
+## How do I get set up?
 
 Run `pip install sp2ts`
 
-(or `pip install git+https://github.com/SheffieldSolar/sp2ts/`)
+(or make sure you have Git installed - [Download Git](https://git-scm.com/downloads) - then run `pip install git+https://github.com/SheffieldSolar/sp2ts/`)
 
 Check that the installation was successful by running the following command from terminal / command-line:
 
@@ -51,7 +51,7 @@ optional arguments:
 Jamie Taylor, 2020-03-31
 ```
 
-## Usage ##
+## Usage
 
 The module contains the following functions:
 
@@ -68,7 +68,7 @@ The module contains the following functions:
 * `dt2sp(datetime, timezone=None)`
     - Convert a Python datetime object into a date and settlement period. The `datetime` must be timezone-aware, or else you must also pass the `timezone` as an Olsen timezone string. Settlement periods are considered to be "closed right" i.e. SP 1 refers to the interval 00:00:00 < t <= 00:30:00.
 
-### Example ###
+### Example
 ```
 from datetime import date
 
@@ -93,12 +93,20 @@ if __name__ == "__main__":
 
 > 1585396800 (2020-03-28 12:00:00+00:00)  -->  2020-03-28 SP24
 
-## How do I update? ##
+## How do I update?
 
-Run `pip3 install --upgrade git+https://github.com/SheffieldSolar/sp2ts/`.
+Run `pip install --upgrade sp2ts`.
 
-## How do I run tests? ##
+## How do I run tests?
 
 Clone the repo locally, then run the following command from the repo's root:
 
 ```>> python -m Tests.test_sp2ts```
+
+## Who do I talk to?
+
+* Jamie Taylor - [jamie.taylor@sheffield.ac.uk](mailto:jamie.taylor@sheffield.ac.uk "Email Jamie") - [SheffieldSolar](https://github.com/SheffieldSolar)
+
+## Authors
+
+* **Jamie Taylor** - [SheffieldSolar](https://github.com/SheffieldSolar)

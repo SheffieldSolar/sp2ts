@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sp2ts"
+version = "1.0.0"
+dynamic = ["dependencies"]
+requires-python = ">=3.9"
+authors = [
+  {name="Jamie Taylor", email="jamie.taylor@sheffield.ac.uk"},
+]
+maintainers = [
+  {name="Jamie Taylor", email="jamie.taylor@sheffield.ac.uk"},
+]
+description = "Convert between the settlement periods used by GB electricity industry and Unix timestamps."
+readme = "README.md"
+#license = {file = "LICENSE.txt"}
+keywords = ["timestamp", "timezone", "settlement period", "settlement date", "settlement time", "electricity market"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: System Administrators",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Utilities",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+#[project.optional-dependencies]
+
+[project.urls]
+Homepage = "https://github.com/SheffieldSolar/sp2ts"
+Documentation = "https://sheffieldsolar.github.io/PV_Live-API/build/html/index.html"
+Repository = "https://github.com/SheffieldSolar/sp2ts"
+"Bug Tracker" = "https://github.com/SheffieldSolar/sp2ts/issues"
+
+[project.scripts]
+sp2ts = "sp2ts.sp2ts:main"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {dev = {file = ["requirements_dev.txt"]}}
+
+[tool.setuptools.packages.find]
+#include = []
+exclude = ["Tests*"]
