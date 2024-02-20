@@ -251,10 +251,10 @@ class sp2tsTestCase(unittest.TestCase):
             {"ts": 1585397700, "error": ValueError},
             # TS doesn't exist or is outside supported range
             {"ts": -1, "error": ValueError},
-            ## Min supported datetime is 2000-03-26T00:00:00Z i.e. 954028800
-            {"ts": 954027000, "error": ValueError},
-            ## Max supported datetime is 2029-10-28T00:00:00Z i.e. 1887840000
-            {"ts": 1887841800, "error": ValueError},
+            ## Min supported datetime is 1990-03-25T00:00:00Z i.e. 638323200
+            {"ts": 638321400, "error": ValueError},
+            ## Max supported datetime is 2037-10-25T00:00:00Z i.e. 2140041600
+            {"ts": 2140043400, "error": ValueError},
         ]
         for testval in error_test_values:
             with self.subTest(test_type="errors", sp=testval["ts"]):
