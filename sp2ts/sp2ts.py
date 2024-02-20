@@ -11,60 +11,62 @@ timestamps and Python datetime objects.
 from typing import Optional, Tuple
 from datetime import datetime, date, time, timedelta
 import argparse
+
 import pytz
 import numpy as np
 
 # See get_transition_dates.py
 TRANSITION_DATES_TS = [
-    (638323200, 657072000), # 1990: 1990-03-25, 1990-10-28
-    (670377600, 688521600), # 1991: 1991-03-31, 1991-10-27
-    (701827200, 719971200), # 1992: 1992-03-29, 1992-10-25
-    (733276800, 751420800), # 1993: 1993-03-28, 1993-10-24
-    (764726400, 782870400), # 1994: 1994-03-27, 1994-10-23
-    (796176000, 814320000), # 1995: 1995-03-26, 1995-10-22
-    (828230400, 846374400), # 1996: 1996-03-31, 1996-10-27
-    (859680000, 877824000), # 1997: 1997-03-30, 1997-10-26
-    (891129600, 909273600), # 1998: 1998-03-29, 1998-10-25
-    (922579200, 941328000), # 1999: 1999-03-28, 1999-10-31
-    (954028800, 972777600), # 2000: 2000-03-26, 2000-10-29
-    (985478400, 1004227200), # 2001: 2001-03-25, 2001-10-28
-    (1017532800, 1035676800), # 2002: 2002-03-31, 2002-10-27
-    (1048982400, 1067126400), # 2003: 2003-03-30, 2003-10-26
-    (1080432000, 1099180800), # 2004: 2004-03-28, 2004-10-31
-    (1111881600, 1130630400), # 2005: 2005-03-27, 2005-10-30
-    (1143331200, 1162080000), # 2006: 2006-03-26, 2006-10-29
-    (1174780800, 1193529600), # 2007: 2007-03-25, 2007-10-28
-    (1206835200, 1224979200), # 2008: 2008-03-30, 2008-10-26
-    (1238284800, 1256428800), # 2009: 2009-03-29, 2009-10-25
-    (1269734400, 1288483200), # 2010: 2010-03-28, 2010-10-31
-    (1301184000, 1319932800), # 2011: 2011-03-27, 2011-10-30
-    (1332633600, 1351382400), # 2012: 2012-03-25, 2012-10-28
-    (1364688000, 1382832000), # 2013: 2013-03-31, 2013-10-27
-    (1396137600, 1414281600), # 2014: 2014-03-30, 2014-10-26
-    (1427587200, 1445731200), # 2015: 2015-03-29, 2015-10-25
-    (1459036800, 1477785600), # 2016: 2016-03-27, 2016-10-30
-    (1490486400, 1509235200), # 2017: 2017-03-26, 2017-10-29
-    (1521936000, 1540684800), # 2018: 2018-03-25, 2018-10-28
-    (1553990400, 1572134400), # 2019: 2019-03-31, 2019-10-27
-    (1585440000, 1603584000), # 2020: 2020-03-29, 2020-10-25
-    (1616889600, 1635638400), # 2021: 2021-03-28, 2021-10-31
-    (1648339200, 1667088000), # 2022: 2022-03-27, 2022-10-30
-    (1679788800, 1698537600), # 2023: 2023-03-26, 2023-10-29
-    (1711843200, 1729987200), # 2024: 2024-03-31, 2024-10-27
-    (1743292800, 1761436800), # 2025: 2025-03-30, 2025-10-26
-    (1774742400, 1792886400), # 2026: 2026-03-29, 2026-10-25
-    (1806192000, 1824940800), # 2027: 2027-03-28, 2027-10-31
-    (1837641600, 1856390400), # 2028: 2028-03-26, 2028-10-29
-    (1869091200, 1887840000), # 2029: 2029-03-25, 2029-10-28
-    (1901145600, 1919289600), # 2030: 2030-03-31, 2030-10-27
-    (1932595200, 1950739200), # 2031: 2031-03-30, 2031-10-26
-    (1964044800, 1982793600), # 2032: 2032-03-28, 2032-10-31
-    (1995494400, 2014243200), # 2033: 2033-03-27, 2033-10-30
-    (2026944000, 2045692800), # 2034: 2034-03-26, 2034-10-29
-    (2058393600, 2077142400), # 2035: 2035-03-25, 2035-10-28
-    (2090448000, 2108592000), # 2036: 2036-03-30, 2036-10-26
-    (2121897600, 2140041600), # 2037: 2037-03-29, 2037-10-25
+    (638323200, 657072000),  # 1990: 1990-03-25, 1990-10-28
+    (670377600, 688521600),  # 1991: 1991-03-31, 1991-10-27
+    (701827200, 719971200),  # 1992: 1992-03-29, 1992-10-25
+    (733276800, 751420800),  # 1993: 1993-03-28, 1993-10-24
+    (764726400, 782870400),  # 1994: 1994-03-27, 1994-10-23
+    (796176000, 814320000),  # 1995: 1995-03-26, 1995-10-22
+    (828230400, 846374400),  # 1996: 1996-03-31, 1996-10-27
+    (859680000, 877824000),  # 1997: 1997-03-30, 1997-10-26
+    (891129600, 909273600),  # 1998: 1998-03-29, 1998-10-25
+    (922579200, 941328000),  # 1999: 1999-03-28, 1999-10-31
+    (954028800, 972777600),  # 2000: 2000-03-26, 2000-10-29
+    (985478400, 1004227200),  # 2001: 2001-03-25, 2001-10-28
+    (1017532800, 1035676800),  # 2002: 2002-03-31, 2002-10-27
+    (1048982400, 1067126400),  # 2003: 2003-03-30, 2003-10-26
+    (1080432000, 1099180800),  # 2004: 2004-03-28, 2004-10-31
+    (1111881600, 1130630400),  # 2005: 2005-03-27, 2005-10-30
+    (1143331200, 1162080000),  # 2006: 2006-03-26, 2006-10-29
+    (1174780800, 1193529600),  # 2007: 2007-03-25, 2007-10-28
+    (1206835200, 1224979200),  # 2008: 2008-03-30, 2008-10-26
+    (1238284800, 1256428800),  # 2009: 2009-03-29, 2009-10-25
+    (1269734400, 1288483200),  # 2010: 2010-03-28, 2010-10-31
+    (1301184000, 1319932800),  # 2011: 2011-03-27, 2011-10-30
+    (1332633600, 1351382400),  # 2012: 2012-03-25, 2012-10-28
+    (1364688000, 1382832000),  # 2013: 2013-03-31, 2013-10-27
+    (1396137600, 1414281600),  # 2014: 2014-03-30, 2014-10-26
+    (1427587200, 1445731200),  # 2015: 2015-03-29, 2015-10-25
+    (1459036800, 1477785600),  # 2016: 2016-03-27, 2016-10-30
+    (1490486400, 1509235200),  # 2017: 2017-03-26, 2017-10-29
+    (1521936000, 1540684800),  # 2018: 2018-03-25, 2018-10-28
+    (1553990400, 1572134400),  # 2019: 2019-03-31, 2019-10-27
+    (1585440000, 1603584000),  # 2020: 2020-03-29, 2020-10-25
+    (1616889600, 1635638400),  # 2021: 2021-03-28, 2021-10-31
+    (1648339200, 1667088000),  # 2022: 2022-03-27, 2022-10-30
+    (1679788800, 1698537600),  # 2023: 2023-03-26, 2023-10-29
+    (1711843200, 1729987200),  # 2024: 2024-03-31, 2024-10-27
+    (1743292800, 1761436800),  # 2025: 2025-03-30, 2025-10-26
+    (1774742400, 1792886400),  # 2026: 2026-03-29, 2026-10-25
+    (1806192000, 1824940800),  # 2027: 2027-03-28, 2027-10-31
+    (1837641600, 1856390400),  # 2028: 2028-03-26, 2028-10-29
+    (1869091200, 1887840000),  # 2029: 2029-03-25, 2029-10-28
+    (1901145600, 1919289600),  # 2030: 2030-03-31, 2030-10-27
+    (1932595200, 1950739200),  # 2031: 2031-03-30, 2031-10-26
+    (1964044800, 1982793600),  # 2032: 2032-03-28, 2032-10-31
+    (1995494400, 2014243200),  # 2033: 2033-03-27, 2033-10-30
+    (2026944000, 2045692800),  # 2034: 2034-03-26, 2034-10-29
+    (2058393600, 2077142400),  # 2035: 2035-03-25, 2035-10-28
+    (2090448000, 2108592000),  # 2036: 2036-03-30, 2036-10-26
+    (2121897600, 2140041600),  # 2037: 2037-03-29, 2037-10-25
 ]
+
 
 def to_unixtime(datetime_: datetime, timezone_: Optional[str] = None) -> int:
     """
@@ -99,6 +101,7 @@ def to_unixtime(datetime_: datetime, timezone_: Optional[str] = None) -> int:
     unixtime = int((utc_datetime - datetime(1970, 1, 1, 0, 0, 0, 0, pytz.utc)).total_seconds())
     return unixtime
 
+
 def from_unixtime(timestamp_: int, timezone_: str = "UTC") -> datetime:
     """
     Convert a unixtime int, *timestamp_*, into python datetime object
@@ -121,6 +124,7 @@ def from_unixtime(timestamp_: int, timezone_: str = "UTC") -> datetime:
     _validate_timestamp("timestamp_", timestamp_)
     _validate_timezone("timezone_", timezone_)
     return datetime.fromtimestamp(timestamp_, tz=pytz.timezone(timezone_))
+
 
 def sp2ts(date_: date, sp_: int, closed: str = "right") -> int:
     """
@@ -165,6 +169,7 @@ def sp2ts(date_: date, sp_: int, closed: str = "right") -> int:
         timestamp_ -= 900
     return timestamp_
 
+
 def sp2dt(date_: date, sp_: int, closed: str = "right") -> datetime:
     """
     Convert a date and settlement period into a timezone-aware Python datetime object for the
@@ -186,6 +191,7 @@ def sp2dt(date_: date, sp_: int, closed: str = "right") -> datetime:
         Timezone-aware Python datetime object in UTC.
     """
     return from_unixtime(sp2ts(date_, sp_, closed))
+
 
 def ts2sp(timestamp_: int) -> Tuple[date, int]:
     """
@@ -212,8 +218,6 @@ def ts2sp(timestamp_: int) -> Tuple[date, int]:
                          f"{TRANSITION_DATES_TS[-1][1]}")
     if timestamp_ % 1800 != 0:
         raise ValueError(f"`timestamp_` does not fall on settlement period boundary: {timestamp_}")
-    # if timestamp_ == 1635724800:
-        # import pdb; pdb.set_trace()
     d_ts = (timestamp_ // 86400) * 86400
     date_ = from_unixtime(timestamp_).date()
     hours = (timestamp_ % 86400) / 3600.
@@ -232,6 +236,7 @@ def ts2sp(timestamp_: int) -> Tuple[date, int]:
         date_ += timedelta(days=1)
         sp_ -= max_sp
     return (date_, sp_)
+
 
 def dt2sp(datetime_: datetime, timezone_: Optional[str] = None) -> Tuple[date, int]:
     """
@@ -258,6 +263,7 @@ def dt2sp(datetime_: datetime, timezone_: Optional[str] = None) -> Tuple[date, i
         raise Exception("EITHER datetime_ must contain tzinfo OR timezone_ must be passed.")
     return ts2sp(to_unixtime(datetime_, timezone_))
 
+
 def _validate_datetime(name, datetime_, require_tzinfo=False):
     if not isinstance(datetime_, datetime):
         raise TypeError(f"`{name}` must be of type datetime.datetime")
@@ -265,9 +271,11 @@ def _validate_datetime(name, datetime_, require_tzinfo=False):
         if not datetime_.tzinfo:
             raise ValueError(f"`{name}` is missing tzinfo")
 
+
 def _validate_date(name, date_):
     if not isinstance(date_, date):
         raise TypeError(f"`{name}` must be of type datetime.date")
+
 
 def _validate_timezone(name, timezone_):
     if timezone_ is not None and not isinstance(timezone_, str):
@@ -277,17 +285,20 @@ def _validate_timezone(name, timezone_):
     # except pytz.exceptions.UnknownTimeZoneError:
         # raise ValueError(f"Unknown timezone '{timezone_}'")
 
+
 def _validate_timestamp(name, timestamp_):
     if not isinstance(timestamp_, (int, np.int32, np.int64)):
         raise TypeError(f"`{name}` must be of type int")
     if timestamp_ < 0:
         raise ValueError("Inavalid value for `{name}`, Unix timestamps cannot be negative")
 
+
 def _validate_closed(name, closed):
     if not isinstance(closed, str):
         raise TypeError(f"`{name}` must be of type string")
     if closed.lower() not in ("right", "left", "middle"):
         raise ValueError("The `closed` parameter should be either 'right', 'left' or 'middle'")
+
 
 def _max_sp(date_):
     date_ts = to_unixtime(datetime.combine(date_, time()), "UTC")
@@ -299,6 +310,7 @@ def _max_sp(date_):
         max_sp = 48
     return max_sp
 
+
 def _validate_sp(name, sp_, date_):
     if not isinstance(sp_, int):
         raise TypeError(f"`{name}` must be of type string")
@@ -306,6 +318,7 @@ def _validate_sp(name, sp_, date_):
     if not 1 <= sp_ <= max_sp:
         raise ValueError(f"`{name}` must be in the interval 1 <= {name} <= {max_sp} on date "
                          f"{date_.isoformat()}, got {sp_}")
+
 
 def parse_options():
     """Parse command line options."""
@@ -348,6 +361,7 @@ def parse_options():
                   f"Here's a full list of supported time zones: \n{supported_timezones}")
     return options
 
+
 def main():
     """Run the Command Line Interface."""
     options = parse_options()
@@ -362,6 +376,7 @@ def main():
     elif options.dt is not None:
         date_, sp_ = dt2sp(options.dt, options.tz)
         print(f"{options.dt} ({options.tz})  ->  {date_} SP{sp_}")
+
 
 if __name__ == "__main__":
     main()
