@@ -313,7 +313,7 @@ def _max_sp(date_):
 
 def _validate_sp(name, sp_, date_):
     if not isinstance(sp_, int):
-        raise TypeError(f"`{name}` must be of type string")
+        raise TypeError(f"`{name}` must be of type int")
     max_sp = _max_sp(date_)
     if not 1 <= sp_ <= max_sp:
         raise ValueError(f"`{name}` must be in the interval 1 <= {name} <= {max_sp} on date "
